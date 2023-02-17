@@ -1,0 +1,27 @@
+#example your flink conf
+jobmanager.rpc.address: flink-jobmanager
+taskmanager.numberOfTaskSlots: 1
+blob.server.port: 6124
+jobmanager.rpc.port: 6123
+taskmanager.rpc.port: 6122
+jobmanager.heap.size: 1000m
+taskmanager.memory.process.size: 1000m
+state.backend: rocksdb
+state.checkpoints.dir:
+state.savepoints.dir:
+state.backend.incremental: true
+state.checkpoints.num-retained: 20
+jobmanager.archive.fs.dir:
+web.history: 10
+web.checkpoints.history: 10
+akka.ask.timeout: 300s
+high-availability: zookeeper
+high-availability.zookeeper.quorum:
+high-availability.zookeeper.path.root: /
+high-availability.storageDir:
+high-availability.jobmanager.port: 6123
+metrics.reporters: prom
+metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+metrics.reporter.prom.port: 9250
+classloader.parent-first-patterns.additional: org.apache.tinkerpop.;org.janusgraph.;com.netease.mars
+rest.flamegraph.enabled: true

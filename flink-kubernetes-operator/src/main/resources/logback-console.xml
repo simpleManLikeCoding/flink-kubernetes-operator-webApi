@@ -1,0 +1,19 @@
+<configuration debug="false" scan="true" scanPeriod="20000">
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.file}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.file}.%d{yyyy-MM-dd}</fileNamePattern>
+            <MaxHistory>7</MaxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                [%date{"yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Asia/Shanghai}][%level][%thread][%class][%method][%file:%line][%logger]%msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="file"/>
+    </root>
+</configuration>
