@@ -36,14 +36,13 @@ public class FlinkDeploymentSpec {
     @Value("${flink.imagePullPolicy}")
     private String imagePullPolicy;
 
-    // TODO: 2023/2/14 to do if null
-    @Value("#{${annotation}}")
+    @Value("#{${annotation:{\"app\":\"flink\"}}}")
     private Map<String,String> annotation;
 
-    @Value("#{${label}}")
+    @Value("#{${label:{\"app\":\"flink\"}}}")
     private Map<String,String> label;
 
-    @Value("#{${matchLabel}}")
+    @Value("#{${matchLabel:{\"app\":\"flink\"}}}")
     private Map<String,String> matchLabel;
 
     @Value("${flink.logback.xml}")
@@ -52,7 +51,9 @@ public class FlinkDeploymentSpec {
     @Value("${flink.configFile}")
     private String configFile;
 
-    @Value("${flink.am.host}")
-    private String host;
+    @Value("#{${flink.am.host:null}}")
+    private String jmHost;
+
+
 }
 

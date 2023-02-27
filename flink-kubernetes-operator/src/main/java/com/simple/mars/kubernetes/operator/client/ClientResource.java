@@ -1,6 +1,7 @@
 package com.simple.mars.kubernetes.operator.client;
 
 import com.simple.mars.kubernetes.operator.pod.PodInfo;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.client.Config;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ClientResource {
@@ -35,13 +38,5 @@ public class ClientResource {
 
     public void closeKubernetesClient() throws IOException {
         this.kubernetesClient.close();
-    }
-
-    public PodInfo getPodInfo(String namespace){
-        PodInfo podInfo = new PodInfo(namespace);
-        PodList podList = this.kubernetesClient.pods().inNamespace(namespace).withLabel("component", "jobmanager").list();
-        PodStatus podStatus = podList.getItems().get(0).getStatus();
-        // TODO: 2023/2/17  
-        return null;
     }
 }

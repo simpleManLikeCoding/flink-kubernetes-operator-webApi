@@ -6,6 +6,7 @@ import io.fabric8.kubernetes.api.model.ResourceRequirementsBuilder;
 import lombok.Data;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Data
 public class Resource {
@@ -31,34 +32,18 @@ public class Resource {
 
     private ResourceRequirements resourceRequirements;
 
-    private Resource(Double requestCpu, String requestMemory) {
-        this.requestCpu = requestCpu;
-        this.requestMemory = requestMemory;
-        this.resourceRequirements = new ResourceRequirementsBuilder()
-                .addToRequests(Collections.singletonMap("cpu", new Quantity(requestCpu.toString())))//做成可选择
-                .addToRequests(Collections.singletonMap("memory", new Quantity(requestMemory))).build();
+    public Resource() {
     }
 
-    private Resource(Double requestCpu, String requestMemory, Double limitCpu, String limitMemory) {
-        this.requestCpu = requestCpu;
-        this.requestMemory = requestMemory;
-        this.limitCpu = limitCpu;
-        this.limitMemory = limitMemory;
-        this.resourceRequirements = new ResourceRequirementsBuilder()
-                .addToRequests(Collections.singletonMap("cpu", new Quantity(requestCpu.toString())))//做成可选择
-                .addToRequests(Collections.singletonMap("memory", new Quantity(requestMemory)))
-                .addToLimits(Collections.singletonMap("cpu", new Quantity(limitCpu.toString())))//做成可选择
-                .addToLimits(Collections.singletonMap("memory", new Quantity(limitMemory))).build();
+    public Resource buildResourceRequirement() {
+        ResourceRequirementsBuilder resourceRequirementsBuilder = new ResourceRequirementsBuilder();
+        Optional.ofNullable(this.requestMemory).ifPresent(t -> resourceRequirementsBuilder.addToRequests(Collections.singletonMap("memory", new Quantity(t))));
+        Optional.ofNullable(this.requestCpu).ifPresent(t -> resourceRequirementsBuilder.addToRequests(Collections.singletonMap("cpu", new Quantity(t.toString()))));
+        Optional.ofNullable(this.limitMemory).ifPresent(t -> resourceRequirementsBuilder.addToLimits(Collections.singletonMap("memory", new Quantity(t))));
+        Optional.ofNullable(this.limitCpu).ifPresent(t -> resourceRequirementsBuilder.addToLimits(Collections.singletonMap("cpu", new Quantity(t.toString()))));
+        this.resourceRequirements = resourceRequirementsBuilder.build();
+        return this;
     }
-
-    public static Resource Of(Double requestCpu, String requestMemory) {
-        return new Resource(requestCpu, requestMemory);
-    }
-
-    public static Resource Of(Double requestCpu, String requestMemory, Double limitCpu, String limitMemory) {
-        return new Resource(requestCpu, requestMemory, limitCpu, limitMemory);
-    }
-
 
 
 }

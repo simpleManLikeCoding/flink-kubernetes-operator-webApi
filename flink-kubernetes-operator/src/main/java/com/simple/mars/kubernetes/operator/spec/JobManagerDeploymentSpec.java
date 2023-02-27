@@ -75,7 +75,6 @@ public class JobManagerDeploymentSpec {
                 .endSelector()
                 .withNewTemplate()
                 .withNewMetadata()
-                .addToLabels("app", "flink")
                 .addToLabels("component", "jobmanager")
                 .addToLabels(this.label == null ? this.flinkDeploymentSpec.getLabel() : this.label)
                 .addToAnnotations(this.annotation == null ? this.flinkDeploymentSpec.getAnnotation() : this.annotation)
@@ -113,12 +112,7 @@ public class JobManagerDeploymentSpec {
                 .withNewSecurityContext()
                 .withRunAsUser(9999L)
                 .endSecurityContext()
-                .withNewResources()
-                .addToRequests(Collections.singletonMap("cpu", new Quantity(this.resource.getRequestCpu().toString())))//can choose
-                .addToRequests(Collections.singletonMap("memory", new Quantity(this.resource.getRequestMemory())))
-                .addToLimits(Collections.singletonMap("cpu", new Quantity(this.resource.getLimitCpu().toString())))
-                .addToLimits(Collections.singletonMap("memory", new Quantity(this.resource.getLimitMemory())))
-                .endResources()
+                .withResources(this.resource == null ? null : this.resource.buildResourceRequirement().getResourceRequirements())
                 .endContainer()
                 .addToVolumes(new VolumeBuilder().withName(String.format("%s-jobm-logdir-volume", getNamespace())).withNewEmptyDir().endEmptyDir().build())
                 .addToVolumes(new VolumeBuilder().withName("flink-config-volume").withNewConfigMap().withName("flink-config")
@@ -128,6 +122,7 @@ public class JobManagerDeploymentSpec {
                 .endTemplate()
                 .endSpec()
                 .build();
+
         this.jobmanagerDeployment = tempDeployment;
         return this;
     }
