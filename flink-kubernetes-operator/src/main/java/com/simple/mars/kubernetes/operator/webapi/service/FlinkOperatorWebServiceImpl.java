@@ -1,6 +1,5 @@
 package com.simple.mars.kubernetes.operator.webapi.service;
 
-import com.netease.mars.utilities.json.JsonUtils;
 import com.simple.mars.kubernetes.operator.client.ClientResource;
 import com.simple.mars.kubernetes.operator.pod.PodInfo;
 import com.simple.mars.kubernetes.operator.spec.*;

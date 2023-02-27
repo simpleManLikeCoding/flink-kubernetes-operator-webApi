@@ -4,17 +4,18 @@ package com.simple.mars.kubernetes.operator.webapi.rest;
 import com.netease.mars.utilities.json.JsonUtils;
 import com.simple.mars.kubernetes.operator.webapi.common.ServiceResponse;
 import com.simple.mars.kubernetes.operator.webapi.service.IFlinkOperatorWebService;
+
 import com.simple.mars.kubernetes.operator.webapi.webform.CreateFlinkClusterForm;
 import com.simple.mars.kubernetes.operator.webapi.webform.StopFlinkClusterForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/jflink")
 public class FlinkOperatorWebController {
-
     @Autowired
     IFlinkOperatorWebService iFlinkOperatorWebService;
 
@@ -35,7 +36,7 @@ public class FlinkOperatorWebController {
 
     @PostMapping(value = "/stopFLinkMiniCluster")
     public ServiceResponse stopFLinkMiniCluster(@RequestBody StopFlinkClusterForm stopFlinkClusterForm) throws Exception {
-        logger.info("incoming getPodListInNamespace request: " + stopFlinkClusterForm);
+        logger.info("incoming getPodListInNamespace request: " + JsonUtils.unsafeDumps(stopFlinkClusterForm));
         return iFlinkOperatorWebService.stopFLinkMiniCluster(stopFlinkClusterForm.getNamespace());
     }
 
